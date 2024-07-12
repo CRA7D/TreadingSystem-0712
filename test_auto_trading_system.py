@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import Mock
 
 from auto_trading_system import AutoTradingSystem
-from stockbroker import StockBroker
+from stockbroker import KiwerDriver, NemoDriver
 
 SAMPLE_ID = 'ID1234'
 SAMPLE_PASSWORD = 'PW1234'
@@ -22,14 +22,13 @@ class TestAutoTradingSystem(TestCase):
         self.sut.select_stocker_broker(self.mock_stock_broker)
 
     def test_kiwer_select_stocker_broker(self):
-        kiwer = StockBroker().create("Kiwer")
-
+        kiwer = KiwerDriver()
         self.sut.select_stocker_broker(kiwer)
 
         self.assertEqual(kiwer, self.sut.stock_broker)
 
     def test_nemo_select_stocker_broker(self):
-        nemo = StockBroker().create("Nemo")
+        nemo = NemoDriver()
 
         self.sut.select_stocker_broker(nemo)
 
