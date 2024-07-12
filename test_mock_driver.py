@@ -2,6 +2,12 @@ import io
 import sys
 from unittest import TestCase
 
+from stockbroker import StockBroker
+from mock_driver import MockDriver
+
+ID = 'Fake ID'
+PASSWORD = 'Fake Password'
+
 
 class TestMockDriver(TestCase):
     def test_mock_login(self):
@@ -10,14 +16,14 @@ class TestMockDriver(TestCase):
         sys.stdout = output
 
         try:
-            stock_dirver = StockBroker(MockDriver())
-            stock_driver.login()
+            stock_driver = StockBroker(MockDriver())
+            stock_driver.login(ID, PASSWORD)
 
         finally:
             sys.stdout = original_stdout
 
-        catured_output = output.getvalue()
-        self.assertGreaterEqual(0, captured_output.lower().find("login"))
+        captured_output = output.getvalue()
+        self.assertGreaterEqual(captured_output.lower().find("login"), 0)
 
     def test_mock_buy(self):
         output = io.StringIO()
@@ -25,14 +31,14 @@ class TestMockDriver(TestCase):
         sys.stdout = output
 
         try:
-            stock_dirver = StockBroker(MockDriver())
+            stock_driver = StockBroker(MockDriver())
             stock_driver.buy(222, 1000, 10)
 
         finally:
             sys.stdout = original_stdout
 
-        catured_output = output.getvalue()
-        self.assertGreaterEqual(0, captured_output.lower().find("buy"))
+        captured_output = output.getvalue()
+        self.assertGreaterEqual(captured_output.lower().find("buy"), 0)
 
     def test_mock_sell(self):
         output = io.StringIO()
@@ -40,16 +46,16 @@ class TestMockDriver(TestCase):
         sys.stdout = output
 
         try:
-            stock_dirver = StockBroker(MockDriver())
+            stock_driver = StockBroker(MockDriver())
             stock_driver.sell(222, 1000, 10)
 
         finally:
             sys.stdout = original_stdout
 
-        catured_output = output.getvalue()
-        self.assertGreaterEqual(0, captured_output.lower().find("sell"))
+        captured_output = output.getvalue()
+        self.assertGreaterEqual(captured_output.lower().find("sell"), 0)
 
     def test_mock_get_price(self):
-        stock_dirver = StockBroker(MockDriver())
+        stock_driver = StockBroker(MockDriver())
 
-        self.assertGreaterEqual(0, stock_driver.get_price(222))
+        self.assertGreaterEqual(stock_driver.get_price(222), 0)
