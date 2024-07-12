@@ -23,9 +23,6 @@ class StockBroker:
     def __init__(self, driver: DriverInterface = None):
         self.__driver = driver
 
-    def select_stock_broker(self, driver: DriverInterface):
-        self.__init__(driver)
-
     def login(self, username, password):
         self.__driver.login(username, password)
 
