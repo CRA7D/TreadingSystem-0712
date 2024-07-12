@@ -12,8 +12,12 @@ SAMPLE_STOCK_CODE = 'SC1234'
 SAMPLE_STOCK_PRICE = 10000
 SAMPLE_STOCK_AMOUNT = 5
 
-INCREASED_PRICE = 11000
-DECREASED_PRICE = 9000
+INCREASED_PRICE1 = 11000
+INCREASED_PRICE2 = 12000
+INCREASED_PRICE3 = 13000
+DECREASED_PRICE1 = 9000
+DECREASED_PRICE2 = 8000
+DECREASED_PRICE3 = 7000
 TRADING_AMOUNT = 10
 
 
@@ -57,23 +61,27 @@ class TestAutoTradingSystem(TestCase):
         self.assertEqual(SAMPLE_STOCK_PRICE, self.sut.get_price(SAMPLE_STOCK_CODE))
 
     def test_buy_nice_timing_success(self):
-        self.mock_stock_broker.get_price.side_effect = [SAMPLE_STOCK_PRICE, INCREASED_PRICE]
+        self.mock_stock_broker.get_price.side_effect = [
+            SAMPLE_STOCK_PRICE, INCREASED_PRICE1, INCREASED_PRICE2, INCREASED_PRICE3,
+        ]
         self.mock_stock_broker.buy.return_value = True
 
-        self.assertEqual(TRADING_AMOUNT, self.sut.buy_nice_timing(SAMPLE_STOCK_CODE, INCREASED_PRICE * TRADING_AMOUNT))
+        self.assertEqual(TRADING_AMOUNT, self.sut.buy_nice_timing(SAMPLE_STOCK_CODE, INCREASED_PRICE3 * TRADING_AMOUNT))
 
     def test_buy_nice_timing_failure(self):
-        self.mock_stock_broker.get_price.side_effect = [SAMPLE_STOCK_PRICE, DECREASED_PRICE]
+        self.mock_stock_broker.get_price.side_effect = [SAMPLE_STOCK_PRICE, DECREASED_PRICE1]
 
-        self.assertEqual(0, self.sut.buy_nice_timing(SAMPLE_STOCK_CODE, INCREASED_PRICE * TRADING_AMOUNT))
+        self.assertEqual(0, self.sut.buy_nice_timing(SAMPLE_STOCK_CODE, DECREASED_PRICE1 * TRADING_AMOUNT))
 
     def test_sell_nice_timing_success(self):
-        self.mock_stock_broker.get_price.side_effect = [SAMPLE_STOCK_PRICE, DECREASED_PRICE]
+        self.mock_stock_broker.get_price.side_effect = [
+            SAMPLE_STOCK_PRICE, DECREASED_PRICE1, DECREASED_PRICE2, DECREASED_PRICE3,
+        ]
         self.mock_stock_broker.sell.return_value = True
 
         self.assertEqual(True, self.sut.sell_nice_timing(SAMPLE_STOCK_CODE, TRADING_AMOUNT))
 
     def test_sell_nice_timing_failure(self):
-        self.mock_stock_broker.get_price.side_effect = [SAMPLE_STOCK_PRICE, INCREASED_PRICE]
+        self.mock_stock_broker.get_price.side_effect = [SAMPLE_STOCK_PRICE, INCREASED_PRICE1]
 
         self.assertEqual(False, self.sut.sell_nice_timing(SAMPLE_STOCK_CODE, TRADING_AMOUNT))
