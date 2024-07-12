@@ -1,13 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class StockBroker(ABC):
-    def __init__(self, driver=None):
-        self.select_stock_brocker(driver)
-
-    def select_stock_brocker(self, driver):
-        self.__driver = driver
-
+class DriverInterface(ABC):
     @abstractmethod
     def login(self, username, password):
         pass
@@ -23,3 +17,23 @@ class StockBroker(ABC):
     @abstractmethod
     def get_price(self, code):
         pass
+
+
+class StockBroker:
+    def __init__(self, driver: DriverInterface = None):
+        self.__driver = driver
+
+    def select_stock_broker(self, driver: DriverInterface):
+        self.__init__(driver)
+
+    def login(self, username, password):
+        self.__driver.login(username, password)
+
+    def buy(self, code, price, amount):
+        self.__driver.buy(code, price, amount)
+
+    def sell(self, code, price, amount):
+        self.__driver.sell(code, price, amount)
+
+    def get_price(self, code):
+        return self.__driver.get_price(code)
