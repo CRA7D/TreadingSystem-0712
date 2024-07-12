@@ -2,7 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock
 
 from auto_trading_system import AutoTradingSystem
-from stockbroker import KiwerDriver, NemoDriver
+from nemo_driver import NemoDriver
+from kiwer_driver import KiwerDriver
+
 
 SAMPLE_ID = 'ID1234'
 SAMPLE_PASSWORD = 'PW1234'
